@@ -6,7 +6,7 @@
 
 ***
 
-## 1. Decision trees
+## 1. Decision trees 
 
 ### 1. 	Boolean functions -> decision trees		![Screen Shot 2020-09-05 at 4.59.57 PM](/Users/myoung/Desktop/Screen Shot 2020-09-05 at 4.59.57 PM.png)
 
@@ -109,5 +109,66 @@ Gain(S,Hungry) \approx  0.149 \\
 Gain(S,Patrons) \approx 0.327 \\
 Gain(S,Type) \approx 0.086
 $$
-Once again, according to this metric, we would use "Patrons" as our root note because it gives us the highest information gain. 
+Once again, according to this metric, we would use "Patrons" as our root node because it gives us the highest information gain. 
+
+## 2. Experiments
+
+### 1. Full Trees
+
+#### Discuss what approaches and design choices you had to make for your implementation and what data structures you used.
+
+The first big design choice here was how to store and access the data. I chose to create a "Data" class that would take the data path as an input, and load/store the LIBSVM data line by line in a dictionary where the key was the index and then the value was another dictionary composed like: {"label": +1, "features": [3, 4, 5]}. I chose to dispose of the "index:value" format of the features and instead stored just the index, because all of the values were 1. I then created several helper functions like "get_common_label( )" or "split_on_attr( )" to make the tasks needed for this data in the decision tree pipeline straightforward.  
+
+Once I had my data/data tasks figured out, I defined the entropy, gini, and information gain functions for usage in the ID3 algorithm. To tackle the decision tree itself, I defined a Node class that had level, attribute, information gain, label, right and left as attributes. Leaf nodes in the tree would only have level and label values. I then defined the DecisionTreeClassifier class which had methods to build a tree via the ID3 algorithm, get prediction accuracy and error, and track the depth of the tree. 
+
+In retrospect, I would've handled loading and storing my data differently. Storing the data in a numpy array would've made things much more efficient and generalizable, and in future homeworks I'll try to take that approach. 
+
+Here are the results on the training and test sets using a full tree:
+
+1. Root feature: 40
+2. Information Gain: 0.15394533474074124
+3. Max Depth: 34
+4. Training set error: 0
+5. Test set error: 0.22615971055691952
+
+### 2. Gini index
+
+Implementation: Made sure to specify a generic "purity function" as an input to my information gain function, that made it very simple to simply pass in the "compute gini" function instead of my "compute entropy" function to accomplish this part of the homework. I implemented both the gini and entropy functions according to the definitions supplied earlier in this homework.
+
+Results:
+
+1. Root feature: 40
+2. Information Gain: 0.07374129050815775
+3. Max Depth: 30
+4. Training set error: 0
+5. Test set error: 0.2193435844424344
+
+Using the Gini index actually produced a slightly smaller test error than using entropy as my purity measure. The Gini index split on the same root feature, but given that it gave a different test error and it's depth ended up being different, I have to conclude that it ultimately produced a different tree. This is interesting, as based on the graphs of the gini index compared with entropy I would have assumed they would produce identical results. 
+
+### 3. Limiting Depth
+
+#### a) After running 5-fold cross validation and experimenting with depths ranging from 1-5, here are the results:
+
+Depth: 1 - Accuracy: 0.7554590570719603 +/- 0.011270573868374292
+Depth: 2 - Accuracy: 0.8074648469809759 +/- 0.019260252042547867
+Depth: 3 - Accuracy: 0.8100413564929694 +/- 0.02057577837499194
+Depth: 4 - Accuracy: 0.8049131513647643 +/- 0.018073372276576235
+Depth: 5 - Accuracy: 0.8055541770057898 +/- 0.01680903915088519
+
+Based on these results, I think the winner here is using 3 as the depth, mainly because it has the highest accuracy. This isn't necessarily the clearest cut choice though because it also has the highest standard deviation. Even still, the standard deviation at 3 is very near the standard deviations of its closest competitors (2,4, and 5) so I think choosing 3 despite the standard deviation is a reasonable move. 
+
+#### b) Retraining my tree using a depth of 3 yields the following results:
+
+DEPTH LIMITED - training accuracy:  0.8164313222079589
+DEPTH LIMITED - training error:  0.1835686777920411
+DEPTH LIMITED - test accuracy:  0.8221992505491665
+DEPTH LIMITED - test error:  0.17780074945083346
+
+#### c) Discuss performance of depth limited tree vs full tree and talk about if limiting depth is a good idea:
+
+With a full tree, our training error was 0, which means that a full tree can perfectly conform to given training set. Unfortunately this doesn't mean anything for future performance - in fact it actually means a full tree will probably do worse on future sets of data, because it's memorized a very specific set of data. Examining the test error bears this out: the test error for a full tree was 0.226, while the test error for our depth limited tree was 0.177. This demonstrates that limiting depth for decision trees is actually critical for preventing overfitting and ensuring better performance on unseen data. It's likely that with this dataset, there are only a few features that were super relevant to predicting the labels, which is why such a short depth performed better than the full tree. Limiting depth helps the tree to filter out the signal from the noise. 
+
+### 4. Fairness concerns
+
+Even a perfect classifier may incorporate societal biases because it's making the predictions based on certain features which themselves may be biased. Say for instance that this decision tree is used to decide whether or not a candidate will be approved for a loan or not. Of course such things like gender, race, sexual orientation etc. should not be factored into a decision like that. Someone using this Adult dataset may filter out those features and build a perfect decision tree without them, but it's completely possible that there are residual features which correlate highly with the features they chose to initially not consider, which means that there must be some inherent bias still present in the tree.
 
