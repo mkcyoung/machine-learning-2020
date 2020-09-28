@@ -369,9 +369,11 @@ def main():
     depths = [1, 2, 3, 4, 5]
     mean_accuracies = [] 
     standard_deviations = []
-    k = 5
     fold_ids = ['fold1','fold2','fold3','fold4','fold5']
     path_names = ['data/CVfolds/{}'.format(i) for i in fold_ids]
+    # remove previous trees
+    del decision_tree
+    del decision_tree_gini
 
     for current_depth in depths:
         accuracies = []
@@ -390,14 +392,9 @@ def main():
 
             # Now I have my test fold and training fold
             # Build tree using training fold
-            attributes = [i for i in range(1,124)]
             decision_tree = DecisionTreeClassifier(training_fold,attributes)
             decision_tree.build_tree(current_depth)
             # Evaluate tree using the set aside test fold 
-            # print("train error: ",decision_tree.get_predict_error(training_fold))
-            # print("train accuracy: ",decision_tree.get_predict_accuracy(training_fold))
-            # print("test error: ",decision_tree.get_predict_error(test_fold))
-            # print("test accuracy: ",decision_tree.get_predict_accuracy(test_fold))
             accuracies.append(decision_tree.get_predict_accuracy(test_fold))
         mean_accuracies.append(np.mean(accuracies))
         standard_deviations.append(np.std(accuracies))
