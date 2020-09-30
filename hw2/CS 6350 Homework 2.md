@@ -46,5 +46,11 @@
 
    Is the mistake bound for the hypothesis space C the same as the one you derived above for H? Prove your claim.
 
-   
+   Yes, the mistake bound should be the same - 1 mistake should be made. Whereas before, the algorithm would always predict 0, and be right every time except for the 1 time the instance matched the z of the oracle, the same reasoning applies, except now, the algorithm will always choose 1 and be correct until it stumbles upon the instance x which equals the z of the oracle function. 
+
+## 3. The Perceptron Algorithm and its Variants
+
+
+
+
 
