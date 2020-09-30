@@ -48,9 +48,96 @@
 
    Yes, the mistake bound should be the same - 1 mistake should be made. Whereas before, the algorithm would always predict 0, and be right every time except for the 1 time the instance matched the z of the oracle, the same reasoning applies, except now, the algorithm will always choose 1 and be correct until it stumbles upon the instance x which equals the z of the oracle function. 
 
-## 3. The Perceptron Algorithm and its Variants
+## 3. The Perceptron Algorithm and its Variants: Experiments
 
+1.  Briefly describe the design decisions that you have made in your implemen- tation. (E.g, what programming language, how do you represent the vectors, etc.)
 
+   I used python for my implementation. I stored the csv files for the training, test, and folds data as numpy arrays. This allowed for efficient matrix operations when it came time to run my different perceptron implementations. I built a Data class that had various helper functions for the data (such as shuffling). I also built a perceptron class that contained all the methods for predicting and training for each of the perceptron variants we were asked to construct. 
 
+2. Majority baseline: Consider a classifier that always predicts the most fre- quent label. What is its accuracy on test and training set?
 
+   training majority baseline:  Accuracy = 0.5139013452914798, Most frequent label = 1.0
 
+   testing majority baseline:  Accuracy = 0.543010752688172, Most frequent label = 1.0
+
+3. Results for each variant:
+
+   1. **Simple perceptron**
+
+      1. Best learning rate: 0.01
+
+      2. Cross validation accuracy w/ best hyper parameter: 0.7417040358744394
+
+      3. Total number of updates done while training: 11974
+
+      4. Training set accuracy: 0.805829596412556
+
+      5. Test set accuracy: 0.7455197132616488
+
+      6. Learning curve:
+
+         ![simple](/Users/myoung/Documents/Fall 2020/Machine Learning/machine-learning-2020/hw2/figs/simple.png)
+
+   2. **Decayed learning rate**
+
+      1. Best learning rate: 1
+
+      2. Cross validation accuracy w/ best hyper parameter: 0.7632286995515695
+
+      3. Total number of updates done while training: 9920
+
+      4. Training set accuracy: 0.8197309417040358
+
+      5. Test set accuracy: 0.7885304659498208
+
+      6. Learning curve:
+
+         ![decayed](/Users/myoung/Documents/Fall 2020/Machine Learning/machine-learning-2020/hw2/figs/decayed.png)
+
+   3. **Averaged Perceptron**
+
+      1. Best learning rate: 1
+
+      2. Cross validation accuracy w/ best hyper parameter: 0.7690582959641254
+
+      3. Total number of updates done while training: 11788
+
+      4. Training set accuracy: 0.8394618834080717
+
+      5. Test set accuracy: 0.8028673835125448
+
+      6. Learning curve:
+
+         ![averaged](/Users/myoung/Documents/Fall 2020/Machine Learning/machine-learning-2020/hw2/figs/averaged.png)
+
+   4. **Margin perceptron** 
+
+      1. Best learning rate: 0.1, Best margin: 1
+
+      2. Cross validation accuracy w/ best hyper parameters: 0.768609865470852
+
+      3. Total number of updates done while training: 17917
+
+      4. Training set accuracy: 0.8506726457399103
+
+      5. Test set accuracy: 0.8046594982078853
+
+      6. Learning curve:
+
+         ![margin](/Users/myoung/Documents/Fall 2020/Machine Learning/machine-learning-2020/hw2/figs/margin.png)
+
+   5. **Extra credit**
+
+      1. Best learning rate: 1
+
+      2. Cross validation accuracy w/ best hyper parameter: 0.8188340807174889
+
+      3. Total number of updates done while training: 2181
+
+      4. Training set accuracy: 1.0
+
+      5. Test set accuracy: 0.8405017921146953
+
+      6. Learning curve:
+
+         ![extra_cred](/Users/myoung/Documents/Fall 2020/Machine Learning/machine-learning-2020/hw2/figs/extra_cred.png)

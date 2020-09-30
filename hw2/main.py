@@ -458,7 +458,7 @@ def main():
     x = [i for i in range(epochs)]
     title = '1 - simple perceptron learning curve'
     plot_learning(x,y,title)
-    plt.show()
+    # plt.show()
     print('\n')
 
     ####################### 2. Decaying the learning rate #######################
@@ -491,11 +491,11 @@ def main():
     x = [i for i in range(epochs)]
     title = '2 - decay perceptron learning curve'
     plot_learning(x,y,title)
-    plt.show()
+    # plt.show()
     print('\n')
 
     ################# 3. Averaged Perceptron #########################
-    print("============== 3. Averaged Perceptron ==============")
+    print("============== 3. Averaged Perceptron =========================")
     # 3 - Averaged Perceptron
     # clear old network
     decay_perceptron = None
@@ -525,12 +525,12 @@ def main():
     x = [i for i in range(epochs)]
     title = '3 - averaged perceptron learning curve'
     plot_learning(x,y,title)
-    plt.show()
+    # plt.show()
     print('\n')
 
 
     ################# 4. Margin Perceptron #########################
-    print("============== 4. Margin Perceptron ==============")
+    print("==================== 4. Margin Perceptron =========================")
     # 4 - Margin Perceptron
     # clear old network
     average_perceptron = None
@@ -563,12 +563,12 @@ def main():
     x = [i for i in range(epochs)]
     title = '4 - margin perceptron learning curve'
     plot_learning(x,y,title)
-    plt.show()
+    # plt.show()
 
     print("\n")
 
     ######################## 5. Extra Cred #############################
-    print("============== 5. Extra Credit ==============")
+    print("===================== 5. Extra Credit ==========================")
 
     # Rework the feature space 
     training_features_orig = Data(TRAINING_PATH)
@@ -580,7 +580,7 @@ def main():
     fold_features_orig = [Data(file_path) for file_path in path_names]
 
     # transforming the data
-    print("Tranforming features...")
+    print("Transforming features...")
     transformed_test_data = feature_transformation(testing_features_orig)
     print("...1/7")
     transformed_training_data = feature_transformation(training_features_orig)
@@ -596,13 +596,12 @@ def main():
     # 3 - Averaged Perceptron w/ transformed features
     # clear old network
     margin_perceptron = None
+    average_perceptron = None
 
     learning_rates = [1,0.1,0.01]
     epochs = 10
     print("Cross Validating...")
     best_lr = cross_validate(epochs,learning_rates,'averaged',transformed_folds)
-    print("DONE")
-    print("Training...")
     training_data = transformed_training_data
     test_data = transformed_test_data
     epochs = 20
@@ -622,7 +621,7 @@ def main():
     x = [i for i in range(epochs)]
     title = '5 - average perceptron w/ new features '
     plot_learning(x,y,title)
-    plt.show()
+    # plt.show()
 
 
 
