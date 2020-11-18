@@ -86,7 +86,64 @@ The results of my SVM over trees implementation CV and training/testing are show
 
 #### 1. Find a set of weights for 2-layer network w/ threshold activation that can correctly classify XOR function.
 
+The following weights for the 2-layer network correctly classify the XOR function (determined them by just staring at the problem for way too long):
+$$
+W_{00}^1,W_{10}^1,W_{20}^1 = [1, 1, 1]\\
+W_{01}^1,W_{11}^1,W_{21}^1 = [-1, -1, 1]\\
+W_{00}^o,W_{10}^o,W_{20}^o = [1, 1, -1]
+$$
+Plugging these weights into our network we get:
+$$
+h_1 = sign(x_1W_{00}^1 + x_2W_{10}^1 + (1)W_{20}^1) = sign(x_1 + x_2 + 1) \\
+h_2 = sign(x_1W_{01}^1 + x_2W_{11}^1 + (1)W_{21}^1) = sign(-x_1 + -x_2 + 1)\\
+y = sign(h_1W_{00}^o + h_2W_{10}^0 + (1)W_{20}^o) = sign(h_1+h_2-1) \\
+$$
+We can determine that these weights correctly classify an XOR function by classifying each case:
+$$
+\bold{x_1,x_2 = (-1,-1)} \\
+h_1 = -1, h_2 = +1 \\
+y = -1 \\
+\bold{x_1,x_2 = (-1,+1)} \\
+h_1 = +1, h_2 = +1 \\
+y = +1 \\
+\bold{x_1,x_2 = (+1,-1)} \\
+h_1 = +1, h_2 = +1 \\
+y = +1 \\
+\bold{x_1,x_2 = (+1,+1)} \\
+h_1 = +1, h_2 = -1 \\
+y = -1 \\
+$$
 
+#### 2. Now find a set of weights using a sigmoid activation instead of a threshold activation.
 
+We can use essentially the same weight as before, but with a different bias weight leading into our output:
+$$
+W_{00}^1,W_{10}^1,W_{20}^1 = [1, 1, 1]\\
+W_{01}^1,W_{11}^1,W_{21}^1 = [-1, -1, 1]\\
+W_{00}^o,W_{10}^o,W_{20}^o = [1, 1, -1.3]
+$$
+Plugging these weights into our network we get:
+$$
+h_1 = \sigma(x_1W_{00}^1 + x_2W_{10}^1 + (1)W_{20}^1) = \sigma(x_1 + x_2 + 1) \\
+h_2 = \sigma(x_1W_{01}^1 + x_2W_{11}^1 + (1)W_{21}^1) = \sigma(-x_1 + -x_2 + 1)\\
+y = \sigma(h_1W_{00}^o + h_2W_{10}^0 + (1)W_{20}^o) = \sigma(h_1+h_2-1.3) \\
+$$
+Assuming that when $ y \leq 0.5 = -1$ and $+1$ otherwise, plugging in the cases we get:
+$$
+\sigma(-1) + \sigma(3) \approx 1.22 \\
+\sigma(1) + \sigma(1) \approx 1.46 \\
+\bold{x_1,x_2 = (-1,-1)} \\
+h_1 = \sigma(-1), h_2 = \sigma(3) \\
+y = \sigma(\sigma(-1) + \sigma(3) -1.3) = \sigma(1.22 - 1.3) \approx 0.48 = -1  \\
+\bold{x_1,x_2 = (-1,+1)} \\
+h_1 = \sigma(1), h_2 = \sigma(1) \\
+y = \sigma(1.46 -1.3)  \approx 0.54 = +1  \\
+\bold{x_1,x_2 = (+1,-1)} \\
+h_1 = \sigma(1), h_2 = \sigma(1) \\
+y = \sigma(1.46 -1.3)  \approx 0.54 = +1  \\
+\bold{x_1,x_2 = (+1,+1)} \\
+h_1 = \sigma(3), h_2 = \sigma(-1) \\
+y = \sigma(1.22 -1.3)  \approx 0.48 = -1  \\
+$$
 
 
